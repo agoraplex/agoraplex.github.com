@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Managing Principals &mdash; Agoraplex Capabilities-Based Security 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Agoraplex Capabilities-Based Security 0.0.0 documentation" href="../index.html" />
+    <link rel="next" title="agoraplex.capsec" href="../api.html" />
+    <link rel="prev" title="Introduction to the Agoraplex Capability Security Toolkit" href="introduction.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="agoraplex.capsec"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction to the Agoraplex Capability Security Toolkit"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="managing-principals">
+<span id="managing-principals-chapter"></span><h1>Managing Principals<a class="headerlink" href="#managing-principals" title="Permalink to this headline">¶</a></h1>
+<p>As with <cite>scope</cite>, <a class="reference internal" href="../api.html#agoraplex.capsec.Capability.principals" title="agoraplex.capsec.Capability.principals"><tt class="xref py py-attr docutils literal"><span class="pre">principals</span></tt></a> is
+opaque to <a class="reference internal" href="../api.html#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">capsec</span></tt></a>. Applications with simple needs can
+use the default behaviour, passing <cite>principals</cite> as a string, or an
+iterable of strings.</p>
+<p>Otherwise, the object passed to the
+<a class="reference internal" href="../api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a> must provide a
+<a class="reference external" href="http://docs.python.org/2/reference/datamodel.html#object.__contains__" title="(in Python v2.7)"><tt class="xref py py-meth docutils literal"><span class="pre">__contains__()</span></tt></a> method that, when given a <cite>principal</cite> via
+<a class="reference internal" href="../api.html#agoraplex.capsec.Capability.authorized" title="agoraplex.capsec.Capability.authorized"><tt class="xref py py-meth docutils literal"><span class="pre">authorized()</span></tt></a>, determines its
+membership in <a class="reference internal" href="../api.html#agoraplex.capsec.Capability.principals" title="agoraplex.capsec.Capability.principals"><tt class="xref py py-attr docutils literal"><span class="pre">principals</span></tt></a>
+according to the application&#8217;s policy.</p>
+<p>A custom <cite>principals</cite> object should also override
+<a class="reference external" href="http://docs.python.org/2/reference/datamodel.html#object.__str__" title="(in Python v2.7)"><tt class="xref py py-meth docutils literal"><span class="pre">__str__()</span></tt></a> to return a canonical string form used when
+signing the <a class="reference internal" href="../api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a>. Specifically, given
+two equivalent sets of <cite>principals</cite> (e.g., user objects), they should
+both return the same response to <a class="reference external" href="http://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">str()</span></tt></a>.</p>
+<p>In short, <cite>principals</cite> and <cite>principal</cite> cooperate to do two things:</p>
+<ol class="arabic simple">
+<li>Answer the question &#8220;Is <cite>principal</cite> in <cite>principals?</cite>&#8220;</li>
+<li>Provide a consistent, signable form of <cite>principals</cite>.</li>
+</ol>
+<p>E.g., consider a simple(?) set of <cite>principal</cite> and <cite>principals</cite> classes
+which implements hierarchical group membership:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">from</span> <span class="nn">agoraplex.capsec</span> <span class="kn">import</span> <span class="n">Capability</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+
+<span class="k">class</span> <span class="nc">User</span> <span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span>
+
+<span class="k">class</span> <span class="nc">Group</span> <span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">users</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_users</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">u</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">users</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_users</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Groups</span> <span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">users</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">users</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">((</span><span class="n">user</span> <span class="ow">in</span> <span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">))</span>
+
+<span class="c"># :class:`User` objects, indexed by :attr:`username`:</span>
+<span class="n">users</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="s">&#39;aaron&#39;</span><span class="p">),</span> <span class="n">User</span><span class="p">(</span><span class="s">&#39;becky&#39;</span><span class="p">),</span> <span class="n">User</span><span class="p">(</span><span class="s">&#39;charmaine&#39;</span><span class="p">),</span>
+                       <span class="n">User</span><span class="p">(</span><span class="s">&#39;zigfield&#39;</span><span class="p">),</span> <span class="n">User</span><span class="p">(</span><span class="s">&#39;yates&#39;</span><span class="p">),</span> <span class="n">User</span><span class="p">(</span><span class="s">&#39;xavier&#39;</span><span class="p">)))</span>
+
+<span class="c"># set up a few &#39;flat&#39; :class:`Group: objects</span>
+<span class="n">staff</span>   <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">users</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;aaron&#39;</span><span class="p">,</span> <span class="s">&#39;becky&#39;</span><span class="p">,</span> <span class="s">&#39;charmaine&#39;</span><span class="p">))</span>
+<span class="n">admin</span>   <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">users</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;zigfield&#39;</span><span class="p">,</span> <span class="s">&#39;yates&#39;</span><span class="p">))</span>
+<span class="n">sudoers</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">users</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;xavier&#39;</span><span class="p">,))</span>
+
+<span class="c"># and two :class:`Groups` objects:</span>
+<span class="n">trusted</span> <span class="o">=</span> <span class="n">Groups</span><span class="p">((</span><span class="n">admin</span><span class="p">,</span> <span class="n">sudoers</span><span class="p">))</span>
+<span class="n">all_</span>    <span class="o">=</span> <span class="n">Groups</span><span class="p">((</span><span class="n">staff</span><span class="p">,</span> <span class="n">trusted</span><span class="p">))</span>
+
+
+<span class="c"># Now, we can grant a capability to the `trusted` group-of-groups, then</span>
+<span class="c"># check our users against it:</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="n">Capability</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">principals</span><span class="o">=</span><span class="n">trusted</span><span class="p">,</span>
+                 <span class="n">expiry</span><span class="o">=</span><span class="n">Capability</span><span class="o">.</span><span class="n">NEVER</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">&#39;secret&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">cap</span><span class="o">.</span><span class="n">authorized</span><span class="p">(</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">users</span><span class="p">[</span><span class="s">&#39;aaron&#39;</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">cap</span><span class="o">.</span><span class="n">authorized</span><span class="p">(</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">users</span><span class="p">[</span><span class="s">&#39;xavier&#39;</span><span class="p">])</span>
+
+
+<span class="c"># Likewise, we can grant a capability to the `users` group, which</span>
+<span class="c"># recursively includes both groups in `trusted`:</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">Capability</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">principals</span><span class="o">=</span><span class="n">all_</span><span class="p">,</span>
+                 <span class="n">expiry</span><span class="o">=</span><span class="n">Capability</span><span class="o">.</span><span class="n">NEVER</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">&#39;secret&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">cap</span><span class="o">.</span><span class="n">authorized</span><span class="p">(</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">users</span><span class="p">[</span><span class="s">&#39;aaron&#39;</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">cap</span><span class="o">.</span><span class="n">authorized</span><span class="p">(</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="n">users</span><span class="p">[</span><span class="s">&#39;xavier&#39;</span><span class="p">])</span>
+<span class="k">assert</span> <span class="ow">not</span> <span class="n">cap</span><span class="o">.</span><span class="n">authorized</span><span class="p">(</span><span class="s">&#39;rw&#39;</span><span class="p">,</span> <span class="s">&#39;nemo&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Finally, the stringified groups:</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">staff</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;aaron:becky:charmaine&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;yates:zigfield&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">all_</span><span class="p">)</span>  <span class="o">==</span> <span class="s">&#39;aaron:becky:charmaine:xavier:yates:zigfield&#39;</span>
+</pre></div>
+</div>
+<p>Note that we could have used the <cite>User</cite> objects as keys in the group,
+but the point was to show that the
+<a class="reference internal" href="../api.html#agoraplex.capsec.Capability.principals" title="agoraplex.capsec.Capability.principals"><tt class="xref py py-attr docutils literal"><span class="pre">principals</span></tt></a> object (<cite>Group</cite>) and
+the <cite>principal</cite> argument (<cite>User</cite>) cooperate without
+<a class="reference internal" href="../api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a> needing to know any
+details. I.e., the application determines the policy for resolving
+principals and their set membership.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Introduction to the <cite>Agoraplex</cite> Capability Security Toolkit</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api.html"
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">agoraplex.capsec</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/narr/principals.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="agoraplex.capsec"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction to the Agoraplex Capability Security Toolkit"
+             >previous</a> |</li>
+        <li><a href="../index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tripp Lilley.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

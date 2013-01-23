@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>agoraplex.annotation &mdash; Agoraplex Annotations 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Agoraplex Annotations 0.0.0 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to Agoraplex Annotations’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Agoraplex Annotations’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Agoraplex Annotations 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-agoraplex.annotation">
+<span id="agoraplex-annotation"></span><h1><a class="reference internal" href="#module-agoraplex.annotation" title="agoraplex.annotation"><tt class="xref py py-mod docutils literal"><span class="pre">agoraplex.annotation</span></tt></a><a class="headerlink" href="#module-agoraplex.annotation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="agoraplex.annotation.annotated">
+<tt class="descname">annotated</tt><big>(</big><em>func=None</em>, <em>returns=&lt;class 'funcsigs._empty'&gt;</em><big>)</big><a class="reference internal" href="_modules/agoraplex/annotation.html#annotated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.annotation.annotated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to treat <tt class="docutils literal"><span class="pre">func</span></tt>&#8216;s default args as a combination of
+annotations and default values, migrating the annotations to
+<tt class="docutils literal"><span class="pre">func.__annotations__</span></tt>, leaving only the defaults in
+<tt class="docutils literal"><span class="pre">__defaults__</span></tt>).</p>
+<p>The optional <tt class="docutils literal"><span class="pre">returns</span></tt> keyword parameter is placed in the
+resulting <tt class="docutils literal"><span class="pre">__annotations__</span></tt> dict.</p>
+<p>Each default value must be a tuple, <tt class="docutils literal"><span class="pre">(annotation,</span> <span class="pre">default)</span></tt>. To
+supply an unannotated parameter with a default value, use the
+<tt class="docutils literal"><span class="pre">empty</span></tt> marker object. To supply an annotation without a
+default value, use a 1-tuple: <tt class="docutils literal"><span class="pre">(annotation,)</span></tt>.</p>
+<p>Note that the Python 2.x rules prohibiting non-default parameters
+from coming after defaults still apply, but we don&#8217;t enforce those
+rules. The effect of using the <tt class="docutils literal"><span class="pre">(annotation,)</span></tt> form <em>after</em>
+using the <tt class="docutils literal"><span class="pre">(annotation,</span> <span class="pre">default)</span></tt> form is likely to be
+surprising, at best.</p>
+<p>You may specify an unannotated parameter by using an empty tuple
+as its default value. This is to allow placing unannotated
+parameters after annotated parameters. Ordinarily, this would not
+be allowed, since the annotated parameter would mark the start of
+default values, requiring defaults on all subsequent parameters.</p>
+<p>We do <em>not</em> support nested tuple parameters.</p>
+<p>We also don&#8217;t yet have a way to add annotations to the <tt class="docutils literal"><span class="pre">*args</span></tt>
+or <tt class="docutils literal"><span class="pre">**kwargs</span></tt> catch-all parameters, since they don&#8217;t take
+defaults.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">agoraplex.annotation</span> <span class="kn">import</span> <span class="n">annotated</span><span class="p">,</span> <span class="n">empty</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@annotated</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">example</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">,),</span> <span class="n">d</span><span class="o">=</span><span class="p">(),</span> <span class="n">e</span><span class="o">=</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="s">&quot;hi&quot;</span><span class="p">)):</span>
+<span class="gp">... </span>   <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">__annotations__</span>
+<span class="go">{&#39;c&#39;: &lt;type &#39;int&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">__defaults__</span>
+<span class="go">(&#39;hi&#39;,)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nd">@annotated</span><span class="p">(</span><span class="n">returns</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">example</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="p">(</span><span class="nb">int</span><span class="p">,),</span> <span class="n">d</span><span class="o">=</span><span class="p">(),</span> <span class="n">e</span><span class="o">=</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="s">&quot;hi&quot;</span><span class="p">)):</span>
+<span class="gp">... </span>   <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">__annotations__</span>
+<span class="go">{&#39;c&#39;: &lt;type &#39;int&#39;&gt;, &#39;return&#39;: &lt;type &#39;int&#39;&gt;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">__defaults__</span>
+<span class="go">(&#39;hi&#39;,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="agoraplex.annotation.returns">
+<tt class="descname">returns</tt><big>(</big><em>annotation</em><big>)</big><a class="reference internal" href="_modules/agoraplex/annotation.html#returns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.annotation.returns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to add <tt class="docutils literal"><span class="pre">annotation</span></tt> to <tt class="docutils literal"><span class="pre">func</span></tt>&#8216;s <tt class="docutils literal"><span class="pre">return</span></tt>
+annotation, as though it were a Python 3 <tt class="docutils literal"><span class="pre">-&gt;</span> <span class="pre">...</span></tt> annotation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">agoraplex.annotation</span> <span class="kn">import</span> <span class="n">returns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@returns</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">example</span> <span class="p">():</span>
+<span class="gp">... </span>   <span class="k">pass</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">__annotations__</span>
+<span class="go">{&#39;return&#39;: &lt;type &#39;int&#39;&gt;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-agoraplex.annotation.tools">
+<span id="agoraplex-annotation-tools"></span><h1><a class="reference internal" href="#module-agoraplex.annotation.tools" title="agoraplex.annotation.tools"><tt class="xref py py-mod docutils literal"><span class="pre">agoraplex.annotation.tools</span></tt></a><a class="headerlink" href="#module-agoraplex.annotation.tools" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="agoraplex.annotation.tools.TypeName">
+<em class="property">class </em><tt class="descname">TypeName</tt><big>(</big><em>typeobj</em><big>)</big><a class="reference internal" href="_modules/agoraplex/annotation/tools.html#TypeName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.annotation.tools.TypeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expose a <cite>__repr__</cite> around <cite>typeobj</cite> to return a (best-effort)
+&#8220;meaningful&#8221; name (e.g., for writing function signatures).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="agoraplex.annotation.tools.document">
+<tt class="descname">document</tt><big>(</big><em>func</em><big>)</big><a class="reference internal" href="_modules/agoraplex/annotation/tools.html#document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.annotation.tools.document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to insert an annotated function signature into the
+docstring.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="agoraplex.annotation.tools.typename">
+<tt class="descname">typename</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="_modules/agoraplex/annotation/tools.html#typename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.annotation.tools.typename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caching wrapper around <a class="reference internal" href="#agoraplex.annotation.tools.TypeName" title="agoraplex.annotation.tools.TypeName"><tt class="xref py py-class docutils literal"><span class="pre">TypeName</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">agoraplex.annotation</span></tt></a></li>
+<li><a class="reference internal" href="#module-agoraplex.annotation.tools"><tt class="docutils literal"><span class="pre">agoraplex.annotation.tools</span></tt></a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Agoraplex Annotations&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Agoraplex Annotations’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Agoraplex Annotations 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tripp Lilley.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

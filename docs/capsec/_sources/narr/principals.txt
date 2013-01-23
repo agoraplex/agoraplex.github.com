@@ -1,0 +1,43 @@
+.. _managing_principals_chapter:
+
+===================
+Managing Principals
+===================
+
+As with `scope`, :attr:`~agoraplex.capsec.Capability.principals` is
+opaque to :mod:`~agoraplex.capsec`. Applications with simple needs can
+use the default behaviour, passing `principals` as a string, or an
+iterable of strings.
+
+Otherwise, the object passed to the
+:class:`~agoraplex.capsec.Capability` must provide a
+:meth:`~object.__contains__` method that, when given a `principal` via
+:meth:`~agoraplex.capsec.Capability.authorized`, determines its
+membership in :attr:`~agoraplex.capsec.Capability.principals`
+according to the application's policy.
+
+A custom `principals` object should also override
+:meth:`~object.__str__` to return a canonical string form used when
+signing the :class:`~agoraplex.capsec.Capability`. Specifically, given
+two equivalent sets of `principals` (e.g., user objects), they should
+both return the same response to :func:`str`.
+
+In short, `principals` and `principal` cooperate to do two things:
+
+#. Answer the question "Is `principal` in `principals?`"
+
+#. Provide a consistent, signable form of `principals`.
+
+E.g., consider a simple(?) set of `principal` and `principals` classes
+which implements hierarchical group membership:
+
+.. literalinclude:: simple_principals.py
+
+
+Note that we could have used the `User` objects as keys in the group,
+but the point was to show that the
+:attr:`~agoraplex.capsec.Capability.principals` object (`Group`) and
+the `principal` argument (`User`) cooperate without
+:class:`~agoraplex.capsec.Capability` needing to know any
+details. I.e., the application determines the policy for resolving
+principals and their set membership.

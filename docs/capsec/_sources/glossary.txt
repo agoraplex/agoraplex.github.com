@@ -1,0 +1,88 @@
+.. _glossary:
+
+Glossary
+========
+
+.. glossary::
+   :sorted:
+
+   access control
+     *TODO:*
+
+   ACL
+     An *access control list*. From `Wikipedia
+     <http://en.wikipedia.org/wiki/Access_control_list>`__, "a list of
+     permissions attached to an object." See `ACLs don't
+     <http://waterken.sourceforge.net/aclsdont/>`__ for a discussion of
+     the weaknesses of ACLs and comparisons with the
+     :term:`capability-based security` model.
+
+   authentication
+     Establishment of the identity of a :term:`principal`.
+
+   authorization
+     Assignment of :term:`permissions <permission>`, the right to act
+     on a :term:`resource`, to a :term:`principal`.
+
+   capability
+     *TODO:*
+
+   capability-based security
+     See `Wikipedia <http://en.wikipedia.org/wiki/Capability-based_security>`__
+
+   key
+     Private data used to :term:`sign <signature>` and verify a
+     :class:`~agoraplex.capsec.Capability`.
+
+   object facade
+     A proxy around an object, exposing a subset of the object's
+     interface.
+
+   HTTP
+     The Hypertext Transport Protocol, defined in :rfc:`2616`
+     ("HTTP/1.1").
+
+   HTTP method
+     One of the request methods specified in `section 5.1.1
+     <http://tools.ietf.org/html/rfc2616#section-5.1.1>`__ of
+     :rfc:`2616` ("HTTP/1.1") or its extensions (e.g., :rfc:`5789`
+     ("PATCH Method for HTTP")).
+
+   permission
+     The right to act on a :term:`resource`, i.e., to apply
+     :term:`verbs <verb>` to it.
+
+   principal
+     An identity (e.g., user, group, role) resolvable by
+     :term:`authentication`.
+
+   resource
+     Anything identifiable by a :term:`URI`. Within a `Pyramid`_ application,
+     this *may* be an element in the :ref:`resource tree <pyramid:the_resource_tree>`,
+     but our use of the term is general, and framework-agnostic.
+
+   scope
+     A collection of :term:`permissions <permission>` authorized by a
+     :term:`capability`
+
+   signature
+     A cryptographic hash of the contents of a
+     :class:`~agoraplex.capsec.Capability`.
+
+   token
+     *TODO:*
+
+   unique identifier
+     *TODO:*
+
+   URI
+     As defined in :rfc:`3986`: "A Uniform Resource Identifier (URI)
+     is a compact sequence of characters that identifies an abstract
+     or physical :term:`resource`."
+
+   verb
+     In general, an action to be applied to a :term:`resource` (e.g.,
+     a method on an object). In a web application, this is usually an
+     :term:`HTTP method`.
+
+.. _Pyramid: http://docs.pylonsproject.org/en/latest/docs/pyramid.html

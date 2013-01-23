@@ -1,0 +1,8 @@
+:mod:`agoraplex.capsec` is a Python library to apply the
+`object-capability model`_ of security to arbitrary resources exposed
+and accessed through references across process boundaries. It is *not*
+designed to provide security or encapsulation between objects in the
+same process (e.g., to isolate untrusted code). Rather, it
+encapsulates the creation and validation of interprocess references.
+
+.. _object-capability model: http://en.wikipedia.org/wiki/Object-capability_model

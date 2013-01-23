@@ -1,0 +1,167 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Glossary &mdash; Agoraplex Capabilities-Based Security 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Agoraplex Capabilities-Based Security 0.0.0 documentation" href="index.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="narr/blurb.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narr/blurb.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="glossary">
+<span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<dl class="glossary docutils">
+<dt id="term-access-control">access control</dt>
+<dd><em>TODO:</em></dd>
+<dt id="term-acl">ACL</dt>
+<dd>An <em>access control list</em>. From <a class="reference external" href="http://en.wikipedia.org/wiki/Access_control_list">Wikipedia</a>, &#8220;a list of
+permissions attached to an object.&#8221; See <a class="reference external" href="http://waterken.sourceforge.net/aclsdont/">ACLs don&#8217;t</a> for a discussion of
+the weaknesses of ACLs and comparisons with the
+<a class="reference internal" href="#term-capability-based-security"><em class="xref std std-term">capability-based security</em></a> model.</dd>
+<dt id="term-authentication">authentication</dt>
+<dd>Establishment of the identity of a <a class="reference internal" href="#term-principal"><em class="xref std std-term">principal</em></a>.</dd>
+<dt id="term-authorization">authorization</dt>
+<dd>Assignment of <a class="reference internal" href="#term-permission"><em class="xref std std-term">permissions</em></a>, the right to act
+on a <a class="reference internal" href="#term-resource"><em class="xref std std-term">resource</em></a>, to a <a class="reference internal" href="#term-principal"><em class="xref std std-term">principal</em></a>.</dd>
+<dt id="term-capability">capability</dt>
+<dd><em>TODO:</em></dd>
+<dt id="term-capability-based-security">capability-based security</dt>
+<dd>See <a class="reference external" href="http://en.wikipedia.org/wiki/Capability-based_security">Wikipedia</a></dd>
+<dt id="term-http">HTTP</dt>
+<dd>The Hypertext Transport Protocol, defined in <span class="target" id="index-0"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc2616.html"><strong>RFC 2616</strong></a>
+(&#8220;HTTP/1.1&#8221;).</dd>
+<dt id="term-http-method">HTTP method</dt>
+<dd>One of the request methods specified in <a class="reference external" href="http://tools.ietf.org/html/rfc2616#section-5.1.1">section 5.1.1</a> of
+<span class="target" id="index-1"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc2616.html"><strong>RFC 2616</strong></a> (&#8220;HTTP/1.1&#8221;) or its extensions (e.g., <span class="target" id="index-2"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc5789.html"><strong>RFC 5789</strong></a>
+(&#8220;PATCH Method for HTTP&#8221;)).</dd>
+<dt id="term-key">key</dt>
+<dd>Private data used to <a class="reference internal" href="#term-signature"><em class="xref std std-term">sign</em></a> and verify a
+<a class="reference internal" href="api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a>.</dd>
+<dt id="term-object-facade">object facade</dt>
+<dd>A proxy around an object, exposing a subset of the object&#8217;s
+interface.</dd>
+<dt id="term-permission">permission</dt>
+<dd>The right to act on a <a class="reference internal" href="#term-resource"><em class="xref std std-term">resource</em></a>, i.e., to apply
+<a class="reference internal" href="#term-verb"><em class="xref std std-term">verbs</em></a> to it.</dd>
+<dt id="term-principal">principal</dt>
+<dd>An identity (e.g., user, group, role) resolvable by
+<a class="reference internal" href="#term-authentication"><em class="xref std std-term">authentication</em></a>.</dd>
+<dt id="term-resource">resource</dt>
+<dd>Anything identifiable by a <a class="reference internal" href="#term-uri"><em class="xref std std-term">URI</em></a>. Within a <a class="reference external" href="http://docs.pylonsproject.org/en/latest/docs/pyramid.html">Pyramid</a> application,
+this <em>may</em> be an element in the <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/traversal.html#the-resource-tree" title="(in The Pyramid Web Application Development Framework v1.4)"><em class="xref std std-ref">resource tree</em></a>,
+but our use of the term is general, and framework-agnostic.</dd>
+<dt id="term-scope">scope</dt>
+<dd>A collection of <a class="reference internal" href="#term-permission"><em class="xref std std-term">permissions</em></a> authorized by a
+<a class="reference internal" href="#term-capability"><em class="xref std std-term">capability</em></a></dd>
+<dt id="term-signature">signature</dt>
+<dd>A cryptographic hash of the contents of a
+<a class="reference internal" href="api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a>.</dd>
+<dt id="term-token">token</dt>
+<dd><em>TODO:</em></dd>
+<dt id="term-unique-identifier">unique identifier</dt>
+<dd><em>TODO:</em></dd>
+<dt id="term-uri">URI</dt>
+<dd>As defined in <span class="target" id="index-3"></span><a class="rfc reference external" href="http://tools.ietf.org/html/rfc3986.html"><strong>RFC 3986</strong></a>: &#8220;A Uniform Resource Identifier (URI)
+is a compact sequence of characters that identifies an abstract
+or physical <a class="reference internal" href="#term-resource"><em class="xref std std-term">resource</em></a>.&#8221;</dd>
+<dt id="term-verb">verb</dt>
+<dd>In general, an action to be applied to a <a class="reference internal" href="#term-resource"><em class="xref std std-term">resource</em></a> (e.g.,
+a method on an object). In a web application, this is usually an
+<a class="reference internal" href="#term-http-method"><em class="xref std std-term">HTTP method</em></a>.</dd>
+</dl>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="narr/blurb.html"
+                        title="previous chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/glossary.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narr/blurb.html" title="&lt;no title&gt;"
+             >previous</a> |</li>
+        <li><a href="index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tripp Lilley.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

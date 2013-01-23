@@ -1,0 +1,10 @@
+:mod:`agoraplex.capsec`
+-----------------------
+
+.. automodule:: agoraplex.capsec
+
+
+:mod:`agoraplex.capsec.policy`
+------------------------------
+
+.. automodule:: agoraplex.capsec.policy

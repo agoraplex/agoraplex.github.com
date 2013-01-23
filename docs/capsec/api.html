@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>agoraplex.capsec &mdash; Agoraplex Capabilities-Based Security 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Agoraplex Capabilities-Based Security 0.0.0 documentation" href="index.html" />
+    <link rel="next" title="&lt;no title&gt;" href="narr/blurb.html" />
+    <link rel="prev" title="Managing Principals" href="narr/principals.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narr/blurb.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="narr/principals.html" title="Managing Principals"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-agoraplex.capsec">
+<span id="agoraplex-capsec"></span><h1><a class="reference internal" href="#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">agoraplex.capsec</span></tt></a><a class="headerlink" href="#module-agoraplex.capsec" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="agoraplex.capsec.Capability">
+<em class="property">class </em><tt class="descname">Capability</tt><a class="reference internal" href="_modules/agoraplex/capsec.html#Capability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.Capability" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<a class="reference external" href="http://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><em>unicode</em></a>) &#8211; identifier for the object on which we hold this capability</li>
+<li><strong>scope</strong> (<em>iter(unicode)</em>) &#8211; list of permissions authorized by this capability</li>
+<li><strong>principals</strong> (<a class="reference external" href="http://docs.python.org/2/library/functions.html#iter" title="(in Python v2.7)"><em>iter</em></a>) &#8211; identifiers for the principals given this capability</li>
+<li><strong>expiry</strong> (<a class="reference external" href="http://docs.python.org/2/library/datetime.html#datetime" title="(in Python v2.7)"><em>datetime</em></a>) &#8211; expiry policy (see notes, below)</li>
+<li><strong>key</strong> (<a class="reference external" href="http://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; key used to sign this capability</li>
+<li><strong>signature</strong> (<a class="reference external" href="http://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; hash of the <cite>(ref, scope..., principals..., key)</cite> tuple</li>
+<li><strong>hash_factory</strong> (<em>_hashlib.HASH</em>) &#8211; <a class="reference external" href="http://docs.python.org/2/library/hashlib.html#hashlib" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">hash</span></tt></a> to use when signing</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="agoraplex.capsec.Capability.expiry">
+<tt class="descname">expiry</tt><a class="headerlink" href="#agoraplex.capsec.Capability.expiry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the expiration policy for this capability. It must be
+either one of the marker values (<a class="reference internal" href="#agoraplex.capsec.Capability.NEVER" title="agoraplex.capsec.Capability.NEVER"><tt class="xref py py-attr docutils literal"><span class="pre">NEVER</span></tt></a> for a long-lived
+capability, <a class="reference internal" href="#agoraplex.capsec.Capability.SESSION" title="agoraplex.capsec.Capability.SESSION"><tt class="xref py py-attr docutils literal"><span class="pre">SESSION</span></tt></a> for session-scope), or a time.</p>
+<p>We don&#8217;t provide a default because that&#8217;s a <em>policy</em> decision.</p>
+<p>An expiry <em>time</em> is either an offset, in seconds, from
+<a class="reference external" href="http://docs.python.org/2/library/time.html#time.gmtime" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">gmtime()</span></tt></a> (i.e., <em>now</em>), or an absolute UTC time.</p>
+<p>Offsets may be either <a class="reference external" href="http://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">int</span></tt></a> or
+<a class="reference external" href="http://docs.python.org/2/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">timedelta</span></tt></a> instances.</p>
+<p>Absolute times may be <a class="reference external" href="http://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt></a>,
+<a class="reference external" href="http://docs.python.org/2/library/time.html#time.struct_time" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">struct_time</span></tt></a>, or <a class="reference external" href="http://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">float</span></tt></a> instances,
+representing the UTC expiry time in seconds from the Unix
+<cite>epoch</cite>.</p>
+<p>We require that absolute times be in UTC so that we need
+neither to import <tt class="xref py py-mod docutils literal"><span class="pre">pytz</span></tt> nor to synthesize a
+<tt class="xref py py-class docutils literal"><span class="pre">tzinfo</span></tt> object in order to convert the time.</p>
+<p>However, if a <a class="reference external" href="http://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt></a> instance has timezone
+info, we <em>will</em> honor it, implicitly, since we use
+<a class="reference external" href="http://docs.python.org/2/library/datetime.html#datetime.datetime.utctimetuple" title="(in Python v2.7)"><tt class="xref py py-meth docutils literal"><span class="pre">utctimetuple()</span></tt></a> to convert the time.</p>
+<p>Ultimately, it&#8217;s easiest (and most common) to just use an
+integer offset.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="agoraplex.capsec.Capability.principals">
+<tt class="descname">principals</tt><a class="headerlink" href="#agoraplex.capsec.Capability.principals" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="narr/principals.html#managing-principals-chapter"><em>Managing Principals</em></a> for more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="agoraplex.capsec.Capability.NEVER">
+<tt class="descname">NEVER</tt><em class="property"> = None</em><a class="headerlink" href="#agoraplex.capsec.Capability.NEVER" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#agoraplex.capsec.Capability.expiry" title="agoraplex.capsec.Capability.expiry"><tt class="xref py py-attr docutils literal"><span class="pre">expiry</span></tt></a> policy: Capability must be explicitly revoked</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="agoraplex.capsec.Capability.SESSION">
+<tt class="descname">SESSION</tt><em class="property"> = 0</em><a class="headerlink" href="#agoraplex.capsec.Capability.SESSION" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#agoraplex.capsec.Capability.expiry" title="agoraplex.capsec.Capability.expiry"><tt class="xref py py-attr docutils literal"><span class="pre">expiry</span></tt></a> policy: Capability expires with the session
+(where <a class="reference external" href="http://docs.pylonsproject.org/projects/pyramid/en/latest/glossary.html#term-session" title="(in The Pyramid Web Application Development Framework v1.4)"><em class="xref std std-term">session</em></a> has application-specific meaning) or
+sooner, if explicitly revoked.  <strong>NOTE:</strong> This is a convenience
+marker for the application.
+<a class="reference internal" href="#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a> weakly enforces this, as
+described in <a class="reference internal" href="#agoraplex.capsec.Capability.expired" title="agoraplex.capsec.Capability.expired"><tt class="xref py py-meth docutils literal"><span class="pre">expired()</span></tt></a>, but it requires the caller
+to have previously validated the session it provides.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agoraplex.capsec.Capability.authorized">
+<tt class="descname">authorized</tt><big>(</big><em>self</em>, <em>scope:iter</em>, <em>principal:object=None</em><big>)</big> &rarr; bool<a class="reference internal" href="_modules/agoraplex/capsec.html#Capability.authorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.Capability.authorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate whether or not the <cite>principal</cite> is authorized for the
+<cite>scope</cite> by the <a class="reference internal" href="#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a>. Basically, is <cite>principal</cite>
+a member of <cite>principals</cite>, and is <cite>scope</cite> a subset of
+<tt class="xref py py-attr docutils literal"><span class="pre">scope</span></tt>.</p>
+<p>If <cite>principal</cite> is <a class="reference external" href="http://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>, ignore it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agoraplex.capsec.Capability.expired">
+<tt class="descname">expired</tt><big>(</big><em>self</em>, <em>session:*=None</em><big>)</big> &rarr; bool<a class="headerlink" href="#agoraplex.capsec.Capability.expired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate whether or not the capability has expired (I.e.,
+return <cite>true</cite> if it&#8217;s expired). If this is a session-scoped
+capability, and <cite>session</cite> exists, we assume it&#8217;s valid and
+return <cite>false</cite>. I.e., &#8220;sessions&#8221; are opaque to the capability.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="agoraplex.capsec.generate_key">
+<tt class="descname">generate_key</tt><big>(</big><em>length:int=128</em>, <em>source:read=None</em><big>)</big> &rarr; str<a class="reference internal" href="_modules/agoraplex/capsec.html#generate_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.generate_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new key of <tt class="docutils literal"><span class="pre">length</span></tt> bits for use with the tools in
+this module. <tt class="docutils literal"><span class="pre">length</span></tt> must be a power of two (2), or the
+resulting key will be shorter than <tt class="docutils literal"><span class="pre">length</span></tt> bits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="agoraplex.capsec.sign">
+<tt class="descname">sign</tt><big>(</big><em>msg:iter</em>, <em>key:str</em>, <em>hash_factory:callable=openssl_sha512</em><big>)</big> &rarr; str<a class="reference internal" href="_modules/agoraplex/capsec.html#sign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign <tt class="docutils literal"><span class="pre">(msg0,</span> <span class="pre">msg1,</span> <span class="pre">...,</span> <span class="pre">key)</span></tt> with the hash object returned by calling
+<tt class="docutils literal"><span class="pre">hash_factory</span></tt> (see <a class="reference external" href="http://docs.python.org/2/library/hashlib.html#hashlib" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">hashlib</span></tt></a>).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-agoraplex.capsec.policy">
+<span id="agoraplex-capsec-policy"></span><h1><a class="reference internal" href="#module-agoraplex.capsec.policy" title="agoraplex.capsec.policy"><tt class="xref py py-mod docutils literal"><span class="pre">agoraplex.capsec.policy</span></tt></a><a class="headerlink" href="#module-agoraplex.capsec.policy" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="agoraplex.capsec.policy.StringContainer">
+<em class="property">class </em><tt class="descname">StringContainer</tt><a class="reference internal" href="_modules/agoraplex/capsec/policy.html#StringContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.policy.StringContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper we use to coerce recognized collections of strings (bare
+strings, uniform tuples of strings, etc.), into a
+<a class="reference external" href="http://docs.python.org/2/library/stdtypes.html#frozenset" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">frozenset</span></tt></a> of strings.</p>
+<p>We use this for <tt class="xref py py-attr docutils literal"><span class="pre">scope</span></tt> and
+<tt class="xref py py-attr docutils literal"><span class="pre">principals</span></tt>, because it automatically de-dupes
+them, and makes them qwuickly testable for set membership in (in
+<tt class="xref py py-meth docutils literal"><span class="pre">authorized()</span></tt>).  scope = frozenset(scope)</p>
+<dl class="classmethod">
+<dt id="agoraplex.capsec.policy.StringContainer.wrap">
+<em class="property">classmethod </em><tt class="descname">wrap</tt><big>(</big><em>source</em><big>)</big><a class="reference internal" href="_modules/agoraplex/capsec/policy.html#StringContainer.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agoraplex.capsec.policy.StringContainer.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory function to recognize and canonicalize a string, or
+iterable of strings, or return the original source.</p>
+<p>Note that we <em>don&#8217;t</em> do a simple <cite>iterable</cite> test, because a
+user-defined <cite>scope</cite> or <cite>principals</cite> might be (is <em>likely</em> to
+be) an iterable, and would yield a false positive.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="agoraplex.capsec.policy.StringContainer.wrappable_types">
+<tt class="descname">wrappable_types</tt><em class="property"> = (&lt;type 'set'&gt;, &lt;type 'frozenset'&gt;, &lt;type 'tuple'&gt;, &lt;type 'list'&gt;, &lt;type 'dict'&gt;)</em><a class="headerlink" href="#agoraplex.capsec.policy.StringContainer.wrappable_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">agoraplex.capsec</span></tt></a></li>
+<li><a class="reference internal" href="#module-agoraplex.capsec.policy"><tt class="docutils literal"><span class="pre">agoraplex.capsec.policy</span></tt></a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="narr/principals.html"
+                        title="previous chapter">Managing Principals</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="narr/blurb.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="narr/blurb.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="narr/principals.html" title="Managing Principals"
+             >previous</a> |</li>
+        <li><a href="index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tripp Lilley.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

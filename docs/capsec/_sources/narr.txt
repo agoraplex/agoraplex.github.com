@@ -1,0 +1,74 @@
+Introduction to `Agoraplex` Capability Security
+===============================================
+
+.. include:: blurb.rst
+
+From `CapabilitySecurityModel`_, in the `Portland Pattern Repository's
+Wiki`_
+
+    "A security model (`CategorySecurityModel`_) in which all
+    resources are referenced by "capabilities" that both designate the
+    resource, and authorize access to it. The mechanism by which
+    resources are created ensures that 'names' cannot easily be
+    guessed and are thus 'unforgeable'. Possessing a reference to an
+    object is considered a sufficient indicator of the right to act
+    upon that reference. It is assumed that if you pass a reference to
+    another object, you're giving them full permission to do anything
+    that object is willing to do. Security is enforced by creating
+    'new' objects that limit the actions (e.g. by throwing exceptions
+    or returning without operation) when the caller attempts a blocked
+    action. It is assumed that you can trust the `ObjectSystem`_
+    environment and host computer to not intentionally violate the
+    security system."
+
+    -- "'The original' `ObjectCapabilityModel`_"
+
+.. _CapabilitySecurityModel: http://c2.com/cgi/wiki?CapabilitySecurityModel
+.. _ObjectCapabilityModel: http://c2.com/cgi/wiki?ObjectCapabilityModel
+.. _Portland Pattern Repository's Wiki: http://c2.com/cgi/wiki?WelcomeVisitors
+.. _CategorySecurityModel: http://c2.com/cgi/wiki?CategorySecurityModel
+.. _ObjectSystem: http://c2.com/cgi/wiki?ObjectSystem
+
+
+Securing Resources
+------------------
+
+:mod:`~agoraplex.capsec` secures :term:`resource` endpoints based on a
+:term:`unique identifier`, a :term:`verb`, and a :term:`principal`. In
+a web application, the *unique identifier* is (or is derived from) a
+:term:`URI`, and the *verb* is an :term:`HTTP method`.
+
+.. note::
+
+   Is *(URI, method, principal)* sufficient? How do we model things
+   like permissions on a specific field of a resource? I suppose each
+   field is a resource unto itself, and the URI specifies which
+   field(s) the action targets?
+
+:mod:`~agoraplex.capsec` provides mechanisms to issue, verify, and
+revoke :term:`cryptographic tokens <token>` representing the authority
+to perform a set of actions on a resource by a :term:`principal`. The
+tuple (:term:`unique identifier`, :term:`verb`, :term:`principal`,
+:term:`token`) is a :term:`capability`, which can be serialized for
+transmission across process boundaries.
+
+
+Object Facades
+--------------
+
+:mod:`~agoraplex.capsec` also provides extensible facilities to manage
+:term:`object facades <object facade>`. It can apply a facade based on
+a :term:`capability`, yielding an object whose public interface
+reflects the permissions the :term:`authenticated <authentication>`
+:term:`principal` currently holds.
+
+.. note::
+
+   Facades are not a security mechanism. They are simply a convenience
+   to allow introspection, dynamic typing, etc., to accurately reflect
+   the set of capabilities currently in effect.
+
+
+**TODO:** token lifetime / expiry
+
+**TODO:** graph traversal and capability creation

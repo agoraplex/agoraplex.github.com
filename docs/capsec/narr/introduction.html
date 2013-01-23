@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction to the Agoraplex Capability Security Toolkit &mdash; Agoraplex Capabilities-Based Security 0.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Agoraplex Capabilities-Based Security 0.0.0 documentation" href="../index.html" />
+    <link rel="next" title="Managing Principals" href="principals.html" />
+    <link rel="prev" title="The Agoraplex Capability Security Toolkit" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="principals.html" title="Managing Principals"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="The Agoraplex Capability Security Toolkit"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction-to-the-agoraplex-capability-security-toolkit">
+<h1>Introduction to the <cite>Agoraplex</cite> Capability Security Toolkit<a class="headerlink" href="#introduction-to-the-agoraplex-capability-security-toolkit" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="https://github.com/agoraplex">Agoraplex</a> Capability Security Toolkit (<a class="reference internal" href="../api.html#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">agoraplex.capsec</span></tt></a>)
+is a Python library to apply the <a class="reference external" href="http://en.wikipedia.org/wiki/Object-capability_model">object-capability model</a> of
+security to arbitrary resources exposed and accessed through
+references across process boundaries. It is <em>not</em> designed to provide
+security or encapsulation between objects in the same process (e.g.,
+to isolate untrusted code). Rather, it encapsulates the creation and
+validation of interprocess references.</p>
+<p>From <a class="reference external" href="http://c2.com/cgi/wiki?CapabilitySecurityModel">CapabilitySecurityModel</a>, in the <a class="reference external" href="http://c2.com/cgi/wiki?WelcomeVisitors">Portland Pattern Repository&#8217;s
+Wiki</a></p>
+<blockquote>
+<div><p>&#8220;A security model (<a class="reference external" href="http://c2.com/cgi/wiki?CategorySecurityModel">CategorySecurityModel</a>) in which all
+resources are referenced by &#8220;capabilities&#8221; that both designate the
+resource, and authorize access to it. The mechanism by which
+resources are created ensures that &#8216;names&#8217; cannot easily be
+guessed and are thus &#8216;unforgeable&#8217;. Possessing a reference to an
+object is considered a sufficient indicator of the right to act
+upon that reference. It is assumed that if you pass a reference to
+another object, you&#8217;re giving them full permission to do anything
+that object is willing to do. Security is enforced by creating
+&#8216;new&#8217; objects that limit the actions (e.g. by throwing exceptions
+or returning without operation) when the caller attempts a blocked
+action. It is assumed that you can trust the <a class="reference external" href="http://c2.com/cgi/wiki?ObjectSystem">ObjectSystem</a>
+environment and host computer to not intentionally violate the
+security system.&#8221;</p>
+<p class="attribution">&mdash;&#8220;&#8216;The original&#8217; <a class="reference external" href="http://c2.com/cgi/wiki?ObjectCapabilityModel">ObjectCapabilityModel</a>&#8220;</p>
+</div></blockquote>
+<div class="section" id="securing-resources">
+<h2>Securing Resources<a class="headerlink" href="#securing-resources" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../api.html#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">capsec</span></tt></a> secures <a class="reference internal" href="../glossary.html#term-resource"><em class="xref std std-term">resource</em></a> endpoints based on a
+<a class="reference internal" href="../glossary.html#term-unique-identifier"><em class="xref std std-term">unique identifier</em></a>, a <a class="reference internal" href="../glossary.html#term-scope"><em class="xref std std-term">scope</em></a>, and a
+<a class="reference internal" href="../glossary.html#term-principal"><em class="xref std std-term">principal</em></a>. The <em>unique identifier</em> designates the <em>resource</em>
+being accessed. The <em>scope</em> enumerates the specific
+<a class="reference internal" href="../glossary.html#term-permission"><em class="xref std std-term">permissions</em></a>  <a class="reference internal" href="../glossary.html#term-authorization"><em class="xref std std-term">authorized</em></a> by
+the capability. The <em>principal</em> indicates the identity (e.g., user,
+group, role) to whom authority is granted.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In a web application, the <em>unique identifier</em> would be a
+<a class="reference internal" href="../glossary.html#term-uri"><em class="xref std std-term">URI</em></a>, and the <em>scope</em> would indicate the <a class="reference internal" href="../glossary.html#term-http-method"><em class="xref std std-term">HTTP methods</em></a> authorized, and the attributes of the resource on
+which those methods are allowed. E.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">agoraplex.capsec</span> <span class="kn">import</span> <span class="n">Capability</span>
+
+<span class="n">ref</span> <span class="o">=</span> <span class="s">&#39;http://api.example.com/profile/123&#39;</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="s">&#39;GET&#39;</span>
+<span class="n">principals</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;user123@example.com&#39;</span><span class="p">,)</span>
+<span class="n">expiry</span> <span class="o">=</span> <span class="n">Capability</span><span class="o">.</span><span class="n">NEVER</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">Capability</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">scope</span><span class="p">,</span> <span class="n">principals</span><span class="p">,</span> <span class="n">expiry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates a <a class="reference internal" href="../api.html#agoraplex.capsec.Capability" title="agoraplex.capsec.Capability"><tt class="xref py py-class docutils literal"><span class="pre">Capability</span></tt></a> object
+granting to <cite>user123&#64;example.com</cite> permission to &#8216;GET&#8217; the
+hypothetical &#8216;profile&#8217; stored at
+<cite>http://api.example.com/profile/123</cite></p>
+<p class="last">(This particular example automatically generates a random
+<a class="reference internal" href="../glossary.html#term-key"><em class="xref std std-term">key</em></a>, which can be retrieved as the capability&#8217;s
+<tt class="xref py py-attr docutils literal"><span class="pre">key</span></tt> attribute.</p>
+</div>
+<p><a class="reference internal" href="../api.html#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">capsec</span></tt></a> provides mechanisms to issue, verify, and
+revoke <a class="reference internal" href="../glossary.html#term-token"><em class="xref std std-term">cryptographic tokens</em></a> representing the authority
+to perform a set of actions on a resource by a <a class="reference internal" href="../glossary.html#term-principal"><em class="xref std std-term">principal</em></a>. The
+tuple (<a class="reference internal" href="../glossary.html#term-unique-identifier"><em class="xref std std-term">unique identifier</em></a>, <a class="reference internal" href="../glossary.html#term-scope"><em class="xref std std-term">scope</em></a>, <a class="reference internal" href="../glossary.html#term-principal"><em class="xref std std-term">principal</em></a>,
+<a class="reference internal" href="../glossary.html#term-key"><em class="xref std std-term">key</em></a>, <a class="reference internal" href="../glossary.html#term-signature"><em class="xref std std-term">signature</em></a>) is a <a class="reference internal" href="../glossary.html#term-capability"><em class="xref std std-term">capability</em></a>, which can be
+serialized for transmission across process boundaries.</p>
+</div>
+<div class="section" id="object-facades">
+<h2>Object Facades<a class="headerlink" href="#object-facades" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../api.html#module-agoraplex.capsec" title="agoraplex.capsec"><tt class="xref py py-mod docutils literal"><span class="pre">capsec</span></tt></a> also provides extensible facilities to manage
+<a class="reference internal" href="../glossary.html#term-object-facade"><em class="xref std std-term">object facades</em></a>. It can apply a facade based on
+a <a class="reference internal" href="../glossary.html#term-capability"><em class="xref std std-term">capability</em></a>, yielding an object whose public interface
+reflects the permissions the <a class="reference internal" href="../glossary.html#term-authentication"><em class="xref std std-term">authenticated</em></a>
+<a class="reference internal" href="../glossary.html#term-principal"><em class="xref std std-term">principal</em></a> currently holds.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Facades are not a security mechanism. They are simply a convenience
+to allow introspection, dynamic typing, etc., to accurately reflect
+the set of capabilities currently in effect.</p>
+</div>
+<p><strong>TODO:</strong> token lifetime / expiry</p>
+<p><strong>TODO:</strong> graph traversal and capability creation</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to the <cite>Agoraplex</cite> Capability Security Toolkit</a><ul>
+<li><a class="reference internal" href="#securing-resources">Securing Resources</a></li>
+<li><a class="reference internal" href="#object-facades">Object Facades</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">The <cite>Agoraplex</cite> Capability Security Toolkit</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="principals.html"
+                        title="next chapter">Managing Principals</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/narr/introduction.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="principals.html" title="Managing Principals"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="The Agoraplex Capability Security Toolkit"
+             >previous</a> |</li>
+        <li><a href="../index.html">Agoraplex Capabilities-Based Security 0.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Tripp Lilley.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
